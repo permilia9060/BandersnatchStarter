@@ -17,7 +17,7 @@ class Database:  # like a template for making objects and refers an instance of 
     db_name: the name of the MongoDB database
     collection_name: the name of the collection
 
- Methods:
+ methods:
     __init__(self, db_name="BandersnatchStarter", collection_name="Collection"):
         makes sure the env variables are loaded and the Database is initialized and connected to the database
 
@@ -78,7 +78,7 @@ class Database:  # like a template for making objects and refers an instance of 
 
     def dataframe(self) -> DataFrame:  # retrieves documents and converts them into a Pandas Dataframe
         try:
-            cursor = self.collection.find()  # retrieves all of the documents
+            cursor = self.collection.find({}, {"_id": False})  # retrieves all the documents
             data = list(cursor)  # converts the cursor into a list of dictionaries
             df = DataFrame(data)  # creates a Pandas Dataframe from the list
             return df
@@ -87,12 +87,13 @@ class Database:  # like a template for making objects and refers an instance of 
 
     def html_table(self) -> str:  # generates an HTML table
         try:
-            cursor = self.collection.find()  # retrieves all of the documents
+            cursor = self.collection.find()  # retrieves all the documents
             df = DataFrame(list(cursor))  # changes the documents stored in the cursor into a Pandas DataFrame
             html_table = df.to_html(index=False)  # this will create an HTML string containing a table
-            return html_table  #
+            return html_table
         except Exception as e:
             print(f"An error occurred while generating HTML table: {str(e)}")
+
 
 
 
